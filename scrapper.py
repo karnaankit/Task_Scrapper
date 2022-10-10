@@ -22,7 +22,10 @@ def parser():
         title = json_data.get('data').get('title')
         page = json_data.get('data').get('page') + 1
     temp_page = page
-    while (page <= temp_page + 2):
+    err_count = 0
+    while page <= temp_page + 2:
+        if err_count >= 1:
+            break
         try:
             params['page'] = page
             params['title'] = title
@@ -38,6 +41,7 @@ def parser():
                 page = page + 1
                 params['page'] = page
         except Exception as exc:
+            err_count += 1
             print(exc)
 
 
