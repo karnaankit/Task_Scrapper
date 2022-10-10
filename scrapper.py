@@ -1,5 +1,3 @@
-from base64 import encode
-from encodings import utf_8
 import requests
 import json
 
@@ -30,14 +28,14 @@ def parser():
 
             if search.status_code == 200 and data['status'] == 'success':
                 json_data['page'] = params['page']
-                for i in data["data"]["items"]:
-                    json_data["articles"].extend(i)
+                json_data["articles"].extend(data["data"]["items"])
                 json.dump(json_data, open('results.json', 'w'), indent=4)
                 print("Fetched page:", page, 'successfully')
                 page = page + 1
                 params['page'] = page
         except Exception as exc:
             print(exc)
+            break
 
 
 if __name__ == '__main__':
