@@ -1,45 +1,25 @@
 my_conf = {
-        'conf_one': 13,
-        'conf_two': 'hello',
-        'conf_three': False,
+        'age': 13,
+        'b': True,
+        'name': 'hellooooooooooooooooo',
 }
 my_struct = {
-        'conf_one': int,
-        'conf_two': str,
-        'conf_three': bool}
-leng = {
-            'int_max': 200,
-            'int_min': 0,
-            'str_max': 2000,
-            'str_min': 4,
-        }
+        'age': {'type': int, 'allowed': range(1, 100)},
+        'b': {'type': bool, 'allowed': [True, False]},
+        'name': {'type': str, 'min': 10, 'max': 200},
+}
 
 
 def check_structure(struct, conf):
-    if isinstance(struct, dict) and isinstance(conf, dict):
-        return all(k in conf and check_structure(struct[k], conf[k]) for k in struct)
-    if isinstance(struct, list) and isinstance(conf, list):
-        return all(check_structure(struct[0], c) for c in conf)
-    elif isinstance(struct, type):
-        return isinstance(conf, struct)
-    else:
-        return False
+    for key in struct:
+        if type(conf[key]) != struct[key]['type']:
+            return False
+        if type(conf[key]) is str:
+            return struct[key]['max'] >= len(conf[key]) >= struct[key]['min']
+        elif conf[key] not in struct[key]['allowed']:
+            return False
+    return True
 
 
-def check_length(conf, length):
-    if isinstance(conf, dict):
-        return all(k in conf and check_length(conf[k], length) for k in conf)
-    if isinstance(conf, list):
-        return all(check_length(c, length) for c in conf)
-    elif isinstance(conf, str):
-        return length['str_max'] >= len(conf) >= length['str_min']
-    elif isinstance(conf, int):
-        return length['int_max'] >= conf >= length['int_min']
-    else:
-        return False
+print(check_structure(my_struct, my_conf))
 
-
-if check_structure(my_struct, my_conf) and check_length(my_conf, leng):
-    print(True)
-else:
-    print(False)
