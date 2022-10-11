@@ -29,6 +29,8 @@ def check_structure(struct, conf):
 def check_length(conf, length):
     if isinstance(conf, dict):
         return all(k in conf and check_length(conf[k], length) for k in conf)
+    if isinstance(conf, list):
+        return all(check_length(c, length) for c in conf)
     elif isinstance(conf, str):
         return length['str_max'] >= len(conf) >= length['str_min']
     elif isinstance(conf, int):
