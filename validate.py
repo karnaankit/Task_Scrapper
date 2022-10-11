@@ -1,7 +1,7 @@
 my_conf = {
         'b': True,
         'age': 13,
-        'name': 'hellooooooooooooooooo',
+        'name': 'helloooooooooooooooo',
 }
 my_struct = {
         'b': {'type': bool, 'allowed': [True, False]},
@@ -12,6 +12,8 @@ my_struct = {
 
 def check_structure(struct, conf):
     for key in struct:
+        if key not in conf:
+            return False
         if type(conf[key]) != struct[key]['type']:
             return False
         if type(conf[key]) is str:
