@@ -2,12 +2,28 @@ data = ['Talent she for lively eat led sister', ' Entrance strongly packages she
 search_term = str(input("Word to search for: "))
 
 
-def search(word, data_list):
-    new_list = list()
-    for line in data_list:
-        if word in line:
-            new_list.append(line)
-    return new_list
+def build_dict(data_list):
+    new_dict = {}
+    index = 0
+    for line in data:
+        new_list = line.split()
+        for item in new_list:
+            if item in new_dict:
+                new_dict[item].append(index)
+            else:
+                new_dict[item] = list()
+                new_dict[item].append(index)
+        index += 1
+    return new_dict
 
 
-print(search(search_term, data))
+search_index = build_dict(data)
+
+
+def search(word, index_dict):
+    if word in index_dict:
+        for index in index_dict[word]:
+            print(data[index])
+
+
+search(search_term, search_index)
