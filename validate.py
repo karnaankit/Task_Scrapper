@@ -4,9 +4,9 @@ my_conf = {
         'name': 'helloooooooooooooooo',
 }
 my_struct = {
-        'b': {'type': bool, 'allowed': [True, False]},
-        'age': {'type': int, 'min': 10, 'max': 100},
-        'name': {'type': str, 'min': 10, 'max': 200},
+        'b': {'type': 'bool', 'allowed': [True, False]},
+        'age': {'type': 'integer', 'min': 10, 'max': 100},
+        'name': {'type': 'string', 'min': 10, 'max': 200},
 }
 
 
@@ -14,7 +14,7 @@ def check_structure(struct, conf):
     for key in struct:
         if key not in conf:
             return False
-        if type(conf[key]) != struct[key]['type']:
+        if check_type(conf[key]) != struct[key]['type']:
             return False
         if type(conf[key]) is str:
             return struct[key]['max'] >= len(conf[key]) >= struct[key]['min']
@@ -24,6 +24,16 @@ def check_structure(struct, conf):
             return False
     return True
 
+
+def check_type(a):
+    if type(a) is int:
+        return 'integer'
+    elif type(a) is str:
+        return 'string'
+    elif type(a) is bool:
+        return 'bool'
+    else:
+        return None
 
 print(check_structure(my_struct, my_conf))
 
